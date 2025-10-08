@@ -26,6 +26,7 @@ spring:
               #  Producation 환경에서는 일반적으로 uri에 추가적인 경로가 붙지 않기 때문에 사용할 필요는 없을 것 같음.
               filters:
                 - RewritePath=/search(?<segment>/?.*), /anything$\{segment} # prefix 변경
+                - AddResponseHeader=Cookie, chocolate
 
             - id: booking
               uri: https://httpbin.org
