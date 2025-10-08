@@ -11,6 +11,13 @@ import java.util.Map;
 @RestController
 @Slf4j
 public class FallbackController {
+    /**
+     * Provides a fixed fallback HTTP response used when a circuit breaker is triggered.
+     *
+     * The response map contains keys "status" and "message" describing the fallback state.
+     *
+     * @return a map with "status" -> "fallback" and "message" -> "Service temporarily unavailable"
+     */
     @GetMapping("/__fallback")
     public Mono<Map<String, String>> fallback(ServerWebExchange exchange) {
         log.warn("Circuit breaker fallback triggered for request: {}", exchange.getRequest().getId());
