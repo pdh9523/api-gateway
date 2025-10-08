@@ -25,6 +25,15 @@ spring:
                 name: defaultCB
                 fallbackUri: forward:/__fallback
 
+            - name: Retry
+              args:
+                retries: 3
+                methods: GET
+                backoff:
+                  firstBackoff: 50ms
+                  maxBackoff: 500ms
+                  factor: 2
+
           routes:
             - id: test-route
               uri: https://httpbin.org
