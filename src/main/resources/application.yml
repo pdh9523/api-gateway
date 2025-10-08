@@ -10,7 +10,7 @@ spring:
       server:
         webflux:
           default-filters:
-            - AddRequestHeader=X-gateway, donghyeon.site
+            - AddRequestHeader=X-gateway, donghyeon.site # 먼저 적용됨
           routes:
             - id: test-route
               uri: https://httpbin.org
@@ -29,6 +29,7 @@ spring:
               filters:
                 - RewritePath=/search(?<segment>/?.*), /anything$\{segment} # prefix 변경
                 - AddResponseHeader=Cookie, chocolate
+                - AddRequestHeader=X-gateway, api-gateway # 덮어쓰기가 아니라 추가됨
 
             - id: booking
               uri: https://httpbin.org
