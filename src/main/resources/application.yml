@@ -92,3 +92,8 @@ resilience4j:
     configs:
       default:
         timeoutDuration: 5s  # 타임아웃 5초로 증가
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.retry: DEBUG
