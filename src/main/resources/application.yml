@@ -21,9 +21,17 @@ spring:
               uri: https://httpbin.org/anything
               predicates:
                 - Path=/search/**
-#              filters:
-#                - StripPrefix=1
-#               GET /search 로 요청을 보내면 uri에 /anything이 있어도 /anything을 무시하고 도메인 루트로 리디렉션.
-#               StripPrefix를 활용하는 경우 /search/status 처럼 하위 경로가 있어야 /anything/status로 정상 라우팅
+              #  GET /search 로 요청을 보내면 uri에 /anything이 있어도 /anything을 무시하고 도메인 루트로 리디렉션.
+              #  StripPrefix를 활용하는 경우 /search/status 처럼 하위 경로가 있어야 /anything/status로 정상 라우팅
+              #  Producation 환경에서는 일반적으로 uri에 추가적인 경로가 붙지 않기 때문에 사용할 필요는 없을 것 같음.
               filters:
                 - RewritePath=/search(?<segment>/?.*), /anything$\{segment} # prefix 변경
+
+            - id: booking
+              uri: https://httpbin.org
+              predicates:
+                - Path=/book/**
+              filters:
+                - StripPrefix=1
+              # 추가 헤더 설정
+                - AddRequestHeader=X-Gateway, donghyeon.site
