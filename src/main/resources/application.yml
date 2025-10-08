@@ -45,3 +45,7 @@ spring:
               filters:
                 - StripPrefix=1
                 - RemoveRequestHeader=Cookie
+  data:
+    redis:
+      host: localhost
+      port: 6379
