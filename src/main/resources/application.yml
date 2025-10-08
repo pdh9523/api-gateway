@@ -9,6 +9,8 @@ spring:
     gateway:
       server:
         webflux:
+          default-filters:
+            - AddRequestHeader=X-gateway, donghyeon.site
           routes:
             - id: test-route
               uri: https://httpbin.org
@@ -34,8 +36,6 @@ spring:
                 - Path=/book/**
               filters:
                 - StripPrefix=1
-              # 추가 헤더 설정
-                - AddRequestHeader=X-Gateway, donghyeon.site
 
             - id: queue
               uri: https://httpbin.org
