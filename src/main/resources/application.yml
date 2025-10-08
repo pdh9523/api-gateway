@@ -11,6 +11,14 @@ spring:
         webflux:
           default-filters:
             - AddRequestHeader=X-gateway, donghyeon.site # 먼저 적용됨
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@remoteAddressResolver}' # 사용자 키 리졸버 가능
+                redis-rate-limiter:
+                  # Token Bucket 알고리즘 기반
+                  replenishRate: 50 # 초당 허용 요청 수
+                  burstCapacity: 100 # 버킷의 최대 용량 (순간 최대 요청 수)
+
           routes:
             - id: test-route
               uri: https://httpbin.org
