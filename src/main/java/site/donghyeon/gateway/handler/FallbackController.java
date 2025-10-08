@@ -1,6 +1,8 @@
 package site.donghyeon.gateway.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
@@ -19,8 +21,17 @@ public class FallbackController {
      * @return a map with "status" -> "fallback" and "message" -> "Service temporarily unavailable"
      */
     @GetMapping("/__fallback")
-    public Mono<Map<String, String>> fallback(ServerWebExchange exchange) {
+    public Mono<ResponseEntity<Map<String,String>>> fallback(ServerWebExchange exchange) {
         log.warn("Circuit breaker fallback triggered for request: {}", exchange.getRequest().getId());
-        return Mono.just(Map.of("status", "fallback", "message", "Service temporarily unavailable"));
+        return Mono.just(
+                ResponseEntity
+                        .status(HttpStatus.SERVICE_UNAVAILABLE)
+                        .body(
+                                Map.of(
+                                        "status", "fallback",
+                                        "message", "Service temporarily unavailable"
+                                )
+                        )
+        );
     }
 }
