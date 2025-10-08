@@ -59,6 +59,13 @@ spring:
               filters:
                 - StripPrefix=1
                 - RemoveRequestHeader=Cookie
+
+            - id: dead-server
+              uri: http://localhost:9999  # 존재하지 않는 백엔드
+              predicates:
+                - Path=/dead/**
+              filters:
+                - StripPrefix=1
   data:
     redis:
       host: localhost
