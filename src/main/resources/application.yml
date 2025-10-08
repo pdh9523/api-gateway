@@ -4,3 +4,15 @@ server:
 spring:
   application:
     name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: test-route
+              uri: https://httpbin.org
+              predicates:
+                - Path=/test/**
+              filters:
+                - StripPrefix=1 # 제거할 경로 세그먼트 개수
