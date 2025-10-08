@@ -36,3 +36,11 @@ spring:
                 - StripPrefix=1
               # 추가 헤더 설정
                 - AddRequestHeader=X-Gateway, donghyeon.site
+
+            - id: queue
+              uri: https://httpbin.org
+              predicates:
+                - Path=/queue/**
+              filters:
+                - StripPrefix=1
+                - RemoveRequestHeader=Cookie
