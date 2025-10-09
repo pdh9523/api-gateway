@@ -14,6 +14,9 @@ public class SecurityConfig {
         return http
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/test/**").permitAll()
+                        // 권한 기반 라우팅 예시
+                        .pathMatchers("/book/**").hasRole("ADMIN")
+                        .pathMatchers("/search/**").hasAnyRole("USER", "ADMIN")
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt
