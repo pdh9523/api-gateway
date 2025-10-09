@@ -16,7 +16,14 @@ public class SecurityConfig {
                         .pathMatchers("/test/**").permitAll()
                         .anyExchange().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt
+                        .jwtAuthenticationConverter(jwtRoleConverter())  // ← 커스텀 Converter 등록
+                ))
                 .build();
+    }
+
+    @Bean
+    public JwtRoleConverter jwtRoleConverter() {
+        return new JwtRoleConverter();
     }
 }
