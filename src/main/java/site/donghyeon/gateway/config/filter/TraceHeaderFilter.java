@@ -35,11 +35,14 @@ public class TraceHeaderFilter implements GlobalFilter, Ordered {
      */
     private String generateTraceId() {
         // trace-id: 32자리 hex (128비트)
-        String traceId = generateRandomHex(16);
-
+        String traceId, parentId;
+        do {
+            traceId = generateRandomHex(16);
+        } while (traceId.equals("0".repeat(32)));
         // parent-id (span-id): 16자리 hex (64비트)
-        String parentId = generateRandomHex(8);
-
+        do {
+            parentId = generateRandomHex(8);
+        }  while (parentId.equals("0".repeat(16)));
         // trace-flags: 01 (sampled)
         return String.format("00-%s-%s-01", traceId, parentId);
     }
