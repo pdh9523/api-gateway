@@ -32,7 +32,6 @@ public class IdempotencyHeaderFilter implements GlobalFilter, Ordered {
 
     private boolean isNonIdempotentMethod(HttpMethod httpMethod) {
         return httpMethod == HttpMethod.POST ||
-                httpMethod == HttpMethod.PUT ||
                 httpMethod == HttpMethod.PATCH;
     }
 
