@@ -8,6 +8,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.security.SecureRandom;
+import java.util.HexFormat;
 import java.util.Random;
 
 @Component
@@ -46,11 +47,7 @@ public class TraceHeaderFilter implements GlobalFilter, Ordered {
     private String generateRandomHex(int byteCount) {
         byte[] bytes = new byte[byteCount];
         RANDOM.nextBytes(bytes);
-        StringBuilder sb = new StringBuilder(byteCount * 2);
-        for (byte b : bytes) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
+        return HexFormat.of().formatHex(bytes);
     }
 
     /**
