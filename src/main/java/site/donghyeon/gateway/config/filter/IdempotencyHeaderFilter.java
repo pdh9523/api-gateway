@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -20,8 +21,7 @@ public class IdempotencyHeaderFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         if (isNonIdempotentMethod(request.getMethod())) {
             String idempotencyKey = request.getHeaders().getFirst("Idempotency-Key");
-            if (idempotencyKey == null || idempotencyKey.isEmpty()) {
-                log.debug("Empty Idempotency-Key in request, {}", request.getHeaders().getFirst("traceparent"));
+            if (StringUtils.hasText(idempotencyKey)) {
                 exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);
                 return exchange.getResponse().setComplete();
             }
