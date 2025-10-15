@@ -22,6 +22,7 @@ public class IdempotencyHeaderFilter implements GlobalFilter, Ordered {
         if (isNonIdempotentMethod(request.getMethod())) {
             String idempotencyKey = request.getHeaders().getFirst("Idempotency-Key");
             if (StringUtils.hasText(idempotencyKey)) {
+                log.debug("Idempotency-Key header is required, {}", request.getHeaders().getFirst("traceparent"));
                 exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);
                 return exchange.getResponse().setComplete();
             }
