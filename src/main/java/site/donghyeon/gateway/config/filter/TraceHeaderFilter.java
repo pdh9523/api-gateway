@@ -10,15 +10,19 @@ import reactor.core.publisher.Mono;
 import java.security.SecureRandom;
 import java.util.HexFormat;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 @Component
 public class TraceHeaderFilter implements GlobalFilter, Ordered {
 
     private static final Random RANDOM = new SecureRandom();
+    private static final Pattern TRACEPARENT_PATTERN =
+            Pattern.compile("^[0-9a-f]{2}-[0-9a-f]{32}-[0-9a-f]{16}-[0-9a-f]{2}$");
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        if (!exchange.getRequest().getHeaders().containsKey("traceparent")) {
+        String traceparentHeader = exchange.getRequest().getHeaders().getFirst("traceparent");
+        if (traceparentHeader == null || !TRACEPARENT_PATTERN.matcher(traceparentHeader).matches()) {
             String traceParent = generateTraceId();
             exchange = exchange.mutate()
                     .request(r -> r.header("traceparent", traceParent))
